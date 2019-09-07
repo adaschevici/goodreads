@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
-import './index.css'
 import { books as globalBooks } from '../../books.json'
+
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import BookIcon from '@material-ui/icons/Book'
+
+import './index.css'
+import Search from '../search'
 
 class App extends Component {
   constructor(props) {
@@ -30,13 +38,17 @@ class App extends Component {
     const { filteredBooks } = this.state
     return (
       <div className="App">
-        <input placeholder="Search here..." onChange={this.onChange}></input>
-        <button onClick={this.search}>Search</button>
-        <ul>
+        <Search search={this.search} />
+        <List dense={true}>
           {filteredBooks.map(book => (
-            <li>{book.title}</li>
+            <ListItem key={book.id}>
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText primary={book.title} />
+            </ListItem>
           ))}
-        </ul>
+        </List>
       </div>
     )
   }
