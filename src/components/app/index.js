@@ -20,17 +20,9 @@ class App extends Component {
     }
   }
 
-  onChange = event => {
+  search = term => {
     this.setState({
-      searchTerm: event.target.value,
-    })
-  }
-
-  search = () => {
-    this.setState({
-      filteredBooks: this.state.books.filter(book =>
-        book.title.includes(this.state.searchTerm)
-      ),
+      filteredBooks: this.state.books.filter(book => book.title.includes(term)),
     })
   }
 
