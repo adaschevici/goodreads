@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import './index.css'
-import { books } from '../../books.json'
+import { books as globalBooks } from '../../books.json'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      books: books.slice(0, 20),
+      books: globalBooks.slice(0, 20),
+      filteredBooks: globalBooks.slice(0, 20),
+      searchTerm: '',
     }
   }
 
@@ -18,20 +20,20 @@ class App extends Component {
 
   search = () => {
     this.setState({
-      books: this.state.books.filter(book =>
+      filteredBooks: this.state.books.filter(book =>
         book.title.includes(this.state.searchTerm)
       ),
     })
   }
 
   render = () => {
-    const { books } = this.state
+    const { filteredBooks } = this.state
     return (
       <div className="App">
         <input placeholder="Search here..." onChange={this.onChange}></input>
         <button onClick={this.search}>Search</button>
         <ul>
-          {books.map(book => (
+          {filteredBooks.map(book => (
             <li>{book.title}</li>
           ))}
         </ul>
