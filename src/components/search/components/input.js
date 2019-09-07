@@ -17,6 +17,8 @@ const Input = ({ onChange }) => {
 
 Input.defaultProps = {}
 
-Input.propTypes = {}
+Input.propTypes = {
+  onChange: PropTypes.func.isRequired,
+}
 
 export default Input
