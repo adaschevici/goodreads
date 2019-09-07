@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { books as globalBooks } from '../../books.json'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -14,11 +13,21 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      books: globalBooks.slice(0, 20),
-      filteredBooks: globalBooks.slice(0, 20),
+      books: [],
+      filteredBooks: [],
       searchTerm: '',
     }
   }
+
+  componentDidMount = () =>
+    fetch('/books/?_page=1')
+      .then(response => response.json())
+      .then(json =>
+        this.setState({
+          books: json,
+          filteredBooks: json,
+        })
+      )
 
   search = term => {
     this.setState({
