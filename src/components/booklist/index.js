@@ -28,7 +28,7 @@ class BookList extends Component {
             />
             <TableBody>
               {books.map(book => (
-                <Book key={book.id} {...book} />
+                <Book key={book.id} book={book} typesMapping={columnHeaders} />
               ))}
             </TableBody>
           </Table>

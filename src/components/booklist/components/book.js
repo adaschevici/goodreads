@@ -7,46 +7,49 @@ import TableRow from '@material-ui/core/TableRow'
 
 import styles from './styles'
 
-const Book = ({
-  classes,
-  isbn,
-  isbn13,
-  authors,
-  original_title,
-  original_publication_year,
-  average_rating,
-  language_code,
-  small_image_url,
-}) => {
+const Book = ({ classes, book, typesMapping }) => {
   return (
     <TableRow>
-      <TableCell className={classes.tableCell}>{isbn}</TableCell>
-      <TableCell className={classes.tableCell}>{Number(isbn13)}</TableCell>
-      <TableCell className={classes.tableCell}>{authors}</TableCell>
-      <TableCell className={classes.tableCell}>{original_title}</TableCell>
-      <TableCell className={classes.tableCell}>
-        {Number(original_publication_year)}
-      </TableCell>
-      <TableCell className={classes.tableCell}>{average_rating}</TableCell>
-      <TableCell className={classes.tableCell}>{language_code}</TableCell>
-      <TableCell>
-        <img src={small_image_url} alt={original_title} />
-      </TableCell>
+      {typesMapping.map(column => {
+        if (column.numeric) {
+          return (
+            <TableCell className={classes.tableCell}>
+              {Number(book[column.id])}
+            </TableCell>
+          )
+        } else if (column.id === 'small_image_url') {
+          return (
+            <TableCell>
+              <img src={book.small_image_url} alt={book.original_title} />
+            </TableCell>
+          )
+        }
+        return (
+          <TableCell className={classes.tableCell}>{book[column.id]}</TableCell>
+        )
+      })}
     </TableRow>
   )
 }
 
 Book.propTypes = {
-  book_id: PropTypes.string.isRequired,
-  isbn: PropTypes.string.isRequired,
-  isbn13: PropTypes.string.isRequired,
-  authors: PropTypes.string.isRequired,
-  original_title: PropTypes.string.isRequired,
-  original_publication_year: PropTypes.string.isRequired,
-  average_rating: PropTypes.string.isRequired,
-  language_code: PropTypes.string.isRequired,
-  small_image_url: PropTypes.string.isRequired,
-  classes: PropTypes.object,
+  book: PropTypes.shape({
+    isbn: PropTypes.string.isRequired,
+    isbn13: PropTypes.string.isRequired,
+    authors: PropTypes.string.isRequired,
+    original_title: PropTypes.string.isRequired,
+    original_publication_year: PropTypes.string.isRequired,
+    average_rating: PropTypes.string.isRequired,
+    language_code: PropTypes.string.isRequired,
+    small_image_url: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+  }).isRequired,
+  typesMapping: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    numeric: PropTypes.bool.isRequired,
+    disablePadding: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
 }
 
 export default withStyles(styles)(Book)

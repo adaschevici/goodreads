@@ -5,8 +5,8 @@ import BookList from '../booklist'
 import Search from '../search'
 
 const columnData = [
-  { id: 'isbn', numeric: false, disablePadding: false, label: 'ISBN' },
-  { id: 'isbn13', numeric: false, disablePadding: false, label: 'ISBN13' },
+  { id: 'isbn', numeric: true, disablePadding: false, label: 'ISBN' },
+  { id: 'isbn13', numeric: true, disablePadding: false, label: 'ISBN13' },
   { id: 'authors', numeric: false, disablePadding: false, label: 'Author' },
   {
     id: 'original_title',
@@ -33,7 +33,7 @@ const columnData = [
     label: 'Language',
   },
   {
-    id: 'thumbnail',
+    id: 'small_image_url',
     numeric: false,
     disablePadding: false,
     label: 'Thumbnail',
@@ -52,11 +52,15 @@ class App extends Component {
   componentDidMount = () =>
     fetch('/books/?_page=1')
       .then(response => response.json())
-      .then(json =>
+      .then(json => {
+        const mapper = columnData.map(column => column.id)
+        const reducedBooks = json.map(book =>
+          (({ ...mapper }) => ({ ...mapper }))(book)
+        )
         this.setState({
-          books: json,
+          books: reducedBooks,
         })
-      )
+      })
 
   search = term => {
     this.setState({
