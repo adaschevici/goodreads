@@ -53,6 +53,7 @@ class App extends Component {
     fetch('/books/?_page=1')
       .then(response => response.json())
       .then(json => {
+        // eslint-disable-next-line no-unused-vars
         const mapper = columnData.map(column => column.id)
         const reducedBooks = json.map(book =>
           (({ ...mapper }) => ({ ...mapper }))(book)

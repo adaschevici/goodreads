@@ -10,24 +10,52 @@ import styles from './styles'
 import BookListHeader from './components/book-list-header'
 import Book from './components/book'
 
+function getSorting(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+    : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1)
+}
+
 class BookList extends Component {
   static propTypes = {
     columnHeaders: PropTypes.arrayOf(PropTypes.object).isRequired,
     books: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      order: 'asc',
+      orderBy: 'original_title',
+    }
+  }
+
+  handleRequestSort = (event, property) => {
+    const orderBy = property
+    const { order } = this.state
+    let currentOrder = 'desc'
+
+    if (orderBy === property && order === 'desc') {
+      currentOrder = 'asc'
+    }
+
+    this.setState({ order: currentOrder, orderBy })
+  }
+
   render = () => {
     const { classes, columnHeaders, books } = this.props
+    const { order, orderBy } = this.state
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <BookListHeader
               columnHeaders={columnHeaders}
-              rowCount={books.length}
+              onRequestSort={this.handleRequestSort}
+              {...this.state}
             />
             <TableBody>
-              {books.map(book => (
+              {books.sort(getSorting(order, orderBy)).map(book => (
                 <Book key={book.id} book={book} typesMapping={columnHeaders} />
               ))}
             </TableBody>
