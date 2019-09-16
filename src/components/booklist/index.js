@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
+import TablePagination from '@material-ui/core/TablePagination'
 
 import styles from './styles'
 import BookListHeader from './components/book-list-header'
@@ -27,6 +28,8 @@ class BookList extends Component {
     this.state = {
       order: 'asc',
       orderBy: 'original_title',
+      page: 0,
+      rowsPerPage: 10,
     }
   }
 
@@ -42,9 +45,19 @@ class BookList extends Component {
     this.setState({ order: currentOrder, orderBy })
   }
 
+  handleChangePage = (event, page) => {
+    this.setState({ page })
+  }
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value })
+  }
+
   render = () => {
     const { classes, columnHeaders, books } = this.props
-    const { order, orderBy } = this.state
+    const { order, orderBy, rowsPerPage, page } = this.state
+    const start = page * rowsPerPage
+    const end = start + rowsPerPage
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
@@ -55,12 +68,29 @@ class BookList extends Component {
               {...this.state}
             />
             <TableBody>
-              {books.sort(getSorting(order, orderBy)).map(book => (
-                <Book key={book.id} book={book} typesMapping={columnHeaders} />
-              ))}
+              {books
+                .sort(getSorting(order, orderBy))
+                .slice(start, end)
+                .map(book => (
+                  <Book
+                    key={book.id}
+                    book={book}
+                    typesMapping={columnHeaders}
+                  />
+                ))}
             </TableBody>
           </Table>
         </div>
+        <TablePagination
+          component="div"
+          count={books.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+          nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
       </Paper>
     )
   }

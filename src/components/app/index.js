@@ -50,7 +50,7 @@ class App extends Component {
   }
 
   componentDidMount = () =>
-    fetch('/books/?_page=1')
+    fetch('/books/')
       .then(response => response.json())
       .then(json => {
         // eslint-disable-next-line no-unused-vars
