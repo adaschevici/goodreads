@@ -11,21 +11,31 @@ const Book = ({ classes, book, typesMapping }) => {
   return (
     <TableRow>
       {typesMapping.map(column => {
-        if (column.numeric) {
-          return (
-            <TableCell className={classes.tableCell}>
-              {Number(book[column.id])}
-            </TableCell>
-          )
+        if (column.numeric && !Number.isNaN(Number(book[column.id]))) {
+          if (book[column.id]) {
+            return (
+              <TableCell key={column.id} className={classes.tableCell}>
+                {Number(book[column.id])}
+              </TableCell>
+            )
+          } else {
+            return (
+              <TableCell key={column.id} className={classes.tableCell}>
+                N/A
+              </TableCell>
+            )
+          }
         } else if (column.id === 'small_image_url') {
           return (
-            <TableCell>
+            <TableCell key={column.id}>
               <img src={book.small_image_url} alt={book.original_title} />
             </TableCell>
           )
         }
         return (
-          <TableCell className={classes.tableCell}>{book[column.id]}</TableCell>
+          <TableCell key={column.id} className={classes.tableCell}>
+            {book[column.id]}
+          </TableCell>
         )
       })}
     </TableRow>
@@ -44,12 +54,14 @@ Book.propTypes = {
     small_image_url: PropTypes.string.isRequired,
     classes: PropTypes.object,
   }).isRequired,
-  typesMapping: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    numeric: PropTypes.bool.isRequired,
-    disablePadding: PropTypes.bool.isRequired,
-    label: PropTypes.string.isRequired,
-  }),
+  typesMapping: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      numeric: PropTypes.bool.isRequired,
+      disablePadding: PropTypes.bool.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
 }
 
 export default withStyles(styles)(Book)
