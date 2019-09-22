@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -54,32 +55,36 @@ class BookList extends Component {
   }
 
   render = () => {
-    const { classes, columnHeaders, books } = this.props
+    const { classes, columnHeaders, books, loading } = this.props
     const { order, orderBy, rowsPerPage, page } = this.state
     const start = page * rowsPerPage
     const end = start + rowsPerPage
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <BookListHeader
-              columnHeaders={columnHeaders}
-              onRequestSort={this.handleRequestSort}
-              {...this.state}
-            />
-            <TableBody>
-              {books
-                .sort(getSorting(order, orderBy))
-                .slice(start, end)
-                .map(book => (
-                  <Book
-                    key={book.id}
-                    book={book}
-                    typesMapping={columnHeaders}
-                  />
-                ))}
-            </TableBody>
-          </Table>
+          {loading ? (
+            <CircularProgress className={classes.loader} />
+          ) : (
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <BookListHeader
+                columnHeaders={columnHeaders}
+                onRequestSort={this.handleRequestSort}
+                {...this.state}
+              />
+              <TableBody>
+                {books
+                  .sort(getSorting(order, orderBy))
+                  .slice(start, end)
+                  .map(book => (
+                    <Book
+                      key={book.id}
+                      book={book}
+                      typesMapping={columnHeaders}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
+          )}
         </div>
         <TablePagination
           component="div"

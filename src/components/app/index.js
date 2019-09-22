@@ -57,6 +57,7 @@ class App extends Component {
     super(props)
     this.state = {
       filter: '',
+      loading: false,
     }
   }
 
@@ -72,19 +73,24 @@ class App extends Component {
   }
 
   render = () => {
-    const { books } = this.props
+    const { books, loading } = this.props
     const { filter } = this.state
     const filteredBooks = books.filter(book => book.title.includes(filter))
     return (
       <div className="app">
         <Search search={term => this.search(term)} />
-        <BookList books={filteredBooks} columnHeaders={columnData} />
+        <BookList
+          books={filteredBooks}
+          loading={loading}
+          columnHeaders={columnData}
+        />
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
+  loading: state.appReducer.loading,
   books: state.appReducer.books,
 })
 

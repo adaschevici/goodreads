@@ -9,6 +9,9 @@ const styles = theme => ({
     minWidth: 1020,
     fontFamily: 'Ubuntu',
   },
+  loader: {
+    margin: '50%',
+  },
   tableWrapper: {
     overflowX: 'auto',
   },
