@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
+import fetchBooksAction from './actions'
 import './index.css'
 import BookList from '../booklist'
 import Search from '../search'
 
-const columnData = [
+export const columnData = [
   { id: 'isbn', numeric: true, disablePadding: false, label: 'ISBN' },
   { id: 'isbn13', numeric: true, disablePadding: false, label: 'ISBN13' },
   { id: 'authors', numeric: false, disablePadding: false, label: 'Author' },
@@ -41,27 +44,26 @@ const columnData = [
 ]
 
 class App extends Component {
+  static defaultProps = {
+    books: [],
+  }
+
+  static propTypes = {
+    fetchBooks: PropTypes.func.isRequired,
+    books: PropTypes.arrayOf(PropTypes.object),
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      books: [],
       filter: '',
     }
   }
 
-  componentDidMount = () =>
-    fetch('/books/')
-      .then(response => response.json())
-      .then(json => {
-        // eslint-disable-next-line no-unused-vars
-        const mapper = columnData.map(column => column.id)
-        const reducedBooks = json.map(book =>
-          (({ ...mapper }) => ({ ...mapper }))(book)
-        )
-        this.setState({
-          books: reducedBooks,
-        })
-      })
+  componentDidMount = () => {
+    const { fetchBooks } = this.props
+    fetchBooks('/books/')
+  }
 
   search = term => {
     this.setState({
@@ -70,7 +72,8 @@ class App extends Component {
   }
 
   render = () => {
-    const { books, filter } = this.state
+    const { books } = this.props
+    const { filter } = this.state
     const filteredBooks = books.filter(book => book.title.includes(filter))
     return (
       <div className="app">
@@ -81,4 +84,15 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = state => ({
+  books: state.appReducer.books,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchBooks: url => dispatch(fetchBooksAction(url)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
