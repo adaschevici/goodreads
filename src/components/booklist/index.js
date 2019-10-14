@@ -34,7 +34,7 @@ class BookList extends Component {
     }
   }
 
-  handleRequestSort = (event, property) => {
+  handleRequestSort = (_, property) => {
     const orderBy = property
     const { order } = this.state
     let currentOrder = 'desc'
@@ -46,7 +46,7 @@ class BookList extends Component {
     this.setState({ order: currentOrder, orderBy })
   }
 
-  handleChangePage = (event, page) => {
+  handleChangePage = (_, page) => {
     this.setState({ page })
   }
 
