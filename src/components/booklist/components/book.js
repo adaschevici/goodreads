@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core/styles'
+import Fab from '@material-ui/core/Fab'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 
@@ -29,6 +32,22 @@ const Book = ({ classes, book, typesMapping }) => {
           return (
             <TableCell key={column.id}>
               <img src={book.small_image_url} alt={book.original_title} />
+            </TableCell>
+          )
+        } else if (column.id === 'edit') {
+          return (
+            <TableCell key={column.id}>
+              <Fab color="secondary" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </TableCell>
+          )
+        } else if (column.id === 'delete') {
+          return (
+            <TableCell key={column.id}>
+              <Fab color="default" aria-label="edit">
+                <DeleteIcon />
+              </Fab>
             </TableCell>
           )
         }

@@ -11,6 +11,7 @@ import TablePagination from '@material-ui/core/TablePagination'
 import styles from './styles'
 import BookListHeader from './components/book-list-header'
 import Book from './components/book'
+import columnData from '../app/data-mapping'
 
 function getSorting(order, orderBy) {
   return order === 'desc'
@@ -59,6 +60,10 @@ class BookList extends Component {
     const { order, orderBy, rowsPerPage, page } = this.state
     const start = page * rowsPerPage
     const end = start + rowsPerPage
+    const rowColumns = [
+      ...columnData.actionButtons,
+      ...columnData.sortableColumns,
+    ]
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
@@ -76,11 +81,7 @@ class BookList extends Component {
                   .sort(getSorting(order, orderBy))
                   .slice(start, end)
                   .map(book => (
-                    <Book
-                      key={book.id}
-                      book={book}
-                      typesMapping={columnHeaders}
-                    />
+                    <Book key={book.id} book={book} typesMapping={rowColumns} />
                   ))}
               </TableBody>
             </Table>
