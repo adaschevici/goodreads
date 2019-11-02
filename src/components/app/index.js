@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   render = () => {
-    const { books, loading } = this.props
+    const { books, loading, history } = this.props
     const { filter } = this.state
     const filteredBooks = books.filter(book => book.title.includes(filter))
     const headers = [columnData.addButton, ...columnData.sortableColumns]
@@ -49,6 +49,7 @@ class App extends Component {
           books={filteredBooks}
           loading={loading}
           columnHeaders={headers}
+          history={history}
         />
       </div>
     )

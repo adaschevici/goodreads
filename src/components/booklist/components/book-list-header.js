@@ -21,8 +21,10 @@ class BookListHeader extends Component {
     return onRequestSort(event, property)
   }
 
+  addBookHandler = history => () => history.push('/edit')
+
   render = () => {
-    const { order, orderBy } = this.props
+    const { order, orderBy, history } = this.props
     const { classes, columnHeaders } = this.props
 
     return (
@@ -38,7 +40,10 @@ class BookListHeader extends Component {
               colSpan={column.span || 1}
             >
               {column.id === 'add' ? (
-                <ActionColumnHeader column={column} />
+                <ActionColumnHeader
+                  column={column}
+                  addBook={this.addBookHandler(history)}
+                />
               ) : (
                 <SortableColumnHeader
                   column={column}

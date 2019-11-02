@@ -56,7 +56,7 @@ class BookList extends Component {
   }
 
   render = () => {
-    const { classes, columnHeaders, books, loading } = this.props
+    const { classes, columnHeaders, books, loading, history } = this.props
     const { order, orderBy, rowsPerPage, page } = this.state
     const start = page * rowsPerPage
     const end = start + rowsPerPage
@@ -74,6 +74,7 @@ class BookList extends Component {
               <BookListHeader
                 columnHeaders={columnHeaders}
                 onRequestSort={this.handleRequestSort}
+                history={history}
                 {...this.state}
               />
               <TableBody>

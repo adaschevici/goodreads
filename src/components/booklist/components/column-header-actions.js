@@ -20,11 +20,16 @@ export const SortableColumnHeader = ({ column, orderBy, order, sorter }) => (
   </Tooltip>
 )
 
-export const ActionColumnHeader = ({ column }) => {
+export const ActionColumnHeader = ({ column, addBook }) => {
   switch (column.id) {
     case 'add':
       return (
-        <Fab variant="extended" color="primary" aria-label="add">
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="add"
+          onClick={addBook}
+        >
           <AddIcon />
           Add book
         </Fab>
