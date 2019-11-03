@@ -7,6 +7,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import { Link } from 'react-router-dom'
 
 import styles from './styles'
 
@@ -37,9 +38,11 @@ const Book = ({ classes, book, typesMapping }) => {
         } else if (column.id === 'edit') {
           return (
             <TableCell key={column.id}>
-              <Fab color="secondary" aria-label="edit">
-                <EditIcon />
-              </Fab>
+              <Link to={{ pathname: '/edit', state: { bookId: book.id } }}>
+                <Fab color="secondary" aria-label="edit">
+                  <EditIcon />
+                </Fab>
+              </Link>
             </TableCell>
           )
         } else if (column.id === 'delete') {

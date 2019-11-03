@@ -1,5 +1,20 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import Paper from '@material-ui/core/Paper'
+import withStyles from '@material-ui/core/styles/withStyles'
+import { withRouter } from 'react-router'
+import styles from './styles'
 
-const EditBook = () => <div>Success</div>
+const EditBook = ({ classes, history }) => {
+  const { bookId } = history.location.state
+  return (
+    <Fragment>
+      <div className={classes.container}>
+        <Paper elevation={1} className={classes.paper}>
+          <h1>Book Editing Form for book id {bookId}</h1>
+        </Paper>
+      </div>
+    </Fragment>
+  )
+}
 
-export default EditBook
+export default withRouter(withStyles(styles)(EditBook))

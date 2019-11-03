@@ -82,7 +82,12 @@ class BookList extends Component {
                   .sort(getSorting(order, orderBy))
                   .slice(start, end)
                   .map(book => (
-                    <Book key={book.id} book={book} typesMapping={rowColumns} />
+                    <Book
+                      key={book.id}
+                      book={book}
+                      typesMapping={rowColumns}
+                      history={history}
+                    />
                   ))}
               </TableBody>
             </Table>
