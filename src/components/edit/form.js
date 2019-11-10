@@ -16,7 +16,7 @@ export default props => {
     isValid,
   } = props
   return (
-    <form onSubmit={values => console.log(values)}>
+    <form onSubmit={handleSubmit}>
       <TextField
         id="originalTitle"
         name="original_title"
