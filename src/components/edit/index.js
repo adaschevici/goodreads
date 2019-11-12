@@ -8,12 +8,22 @@ import validationSchema from './schema'
 import styles from './styles'
 import Form from './form'
 import payload from '../../components/app/payload'
-import { editBook } from './actions'
+import { editBook, addBook } from './actions'
 
-const EditBook = ({ classes, history, editBook }) => {
+const getAction = (book, action, history, props) => {
+  const { editBook, addBook } = props
+  switch (action) {
+    case 'edit':
+      return values => editBook(`/books/${book.id}`, values, history)
+    default:
+      return values => addBook('/books/', values, history)
+  }
+}
+
+const EditBook = ({ classes, history }, props) => {
   const locationState = history.location.state
-  const { book } = locationState ? locationState : payload
-  const formHandler = values => editBook(`/books/${book.id}`, values)
+  const { book, action } = locationState ? locationState : payload
+  const formHandler = getAction(book, action, history, props)
   return (
     <Fragment>
       <div className={classes.container}>
@@ -37,7 +47,8 @@ const EditBook = ({ classes, history, editBook }) => {
   )
 }
 const mapDispatchToProps = dispatch => ({
-  editBook: (url, values) => dispatch(editBook(url, values)),
+  addBook: (url, values, history) => dispatch(addBook(url, values, history)),
+  editBook: (url, values, history) => dispatch(editBook(url, values, history)),
 })
 
 export default connect(

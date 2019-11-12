@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -10,8 +11,9 @@ import TableRow from '@material-ui/core/TableRow'
 import { Link } from 'react-router-dom'
 
 import styles from './styles'
+import { deleteBook } from './actions'
 
-const Book = ({ classes, book, typesMapping }) => {
+const Book = ({ classes, book, typesMapping, history, deleteBook }) => {
   return (
     <TableRow>
       {typesMapping.map(column => {
@@ -38,7 +40,7 @@ const Book = ({ classes, book, typesMapping }) => {
         } else if (column.id === 'edit') {
           return (
             <TableCell key={column.id}>
-              <Link to={{ pathname: '/edit', state: { book } }}>
+              <Link to={{ pathname: '/edit', state: { book, action: 'edit' } }}>
                 <Fab color="secondary" aria-label="edit">
                   <EditIcon />
                 </Fab>
@@ -48,7 +50,11 @@ const Book = ({ classes, book, typesMapping }) => {
         } else if (column.id === 'delete') {
           return (
             <TableCell key={column.id}>
-              <Fab color="default" aria-label="edit">
+              <Fab
+                color="default"
+                aria-label="delete"
+                onClick={() => deleteBook(book.id, history)}
+              >
                 <DeleteIcon />
               </Fab>
             </TableCell>
@@ -86,4 +92,11 @@ Book.propTypes = {
   ),
 }
 
-export default withStyles(styles)(Book)
+const mapDispatchToProps = dispatch => ({
+  deleteBook: (bookId, history) => dispatch(deleteBook(bookId, history)),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(Book))
