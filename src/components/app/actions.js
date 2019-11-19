@@ -29,7 +29,7 @@ const fetchBooksFailedAction = () => ({
 
 export default url => dispatch => {
   dispatch(fetchBooksStartedAction())
-  fetch(url)
+  return fetch(url)
     .then(res => res.json())
     .then(books => {
       // eslint-disable-next-line no-unused-vars

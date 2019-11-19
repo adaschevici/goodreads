@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
+    "fetch-mock": "^8.0.0",
     "formik": "^2.0.3",
     "json-server": "^0.15.1",
     "npm": "^6.11.3",
