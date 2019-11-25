@@ -7,6 +7,10 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
+import {
+  SortableColumnHeader,
+  ActionColumnHeader,
+} from './column-header-actions'
 
 class BookListHeader extends Component {
   static propTypes = {
@@ -15,6 +19,7 @@ class BookListHeader extends Component {
 
   createSortHandler = property => event => {
     const { onRequestSort } = this.props
+    if (['add'].includes(property)) return () => {}
     return onRequestSort(event, property)
   }
 
@@ -32,20 +37,18 @@ class BookListHeader extends Component {
               padding={column.disablePadding ? 'none' : 'default'}
               className={classes.tableCell}
               sortDirection={orderBy === column.id ? order : false}
+              colSpan={column.span || 1}
             >
-              <Tooltip
-                title="Sort"
-                placement={column.numeric ? 'bottom-end' : 'bottom-start'}
-                enterDelay={300}
-              >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
-              </Tooltip>
+              {column.id === 'add' ? (
+                <ActionColumnHeader column={column} />
+              ) : (
+                <SortableColumnHeader
+                  column={column}
+                  orderBy={orderBy}
+                  order={order}
+                  sorter={this.createSortHandler(column.id)}
+                />
+              )}
             </TableCell>
           ))}
         </TableRow>

@@ -3,7 +3,7 @@ import {
   FETCH_BOOKS_SUCCESS,
   FETCH_BOOKS_FAILED,
 } from './types'
-import { columnData } from '.'
+import columnData from './data-mapping'
 
 const fetchBooksStartedAction = () => ({
   type: FETCH_BOOKS_STARTED,
@@ -33,7 +33,7 @@ export default url => dispatch => {
     .then(res => res.json())
     .then(books => {
       // eslint-disable-next-line no-unused-vars
-      const mapper = columnData.map(column => column.id)
+      const mapper = columnData.sortableColumns.map(column => column.id)
       const reducedBooks = books.map(book =>
         (({ ...mapper }) => ({ ...mapper }))(book)
       )
